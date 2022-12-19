@@ -3,26 +3,40 @@ import './App.css';
 import { render } from '@testing-library/react';
 import { Component } from 'react';
 import Home from './home/Home';
-import User from './child/user';
 import Layout from './layout/layout';
 import Users from './parent/users';
 import Gallery from './gallery/Gallery';
-import { createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Notfound from './Notfound/Notfound';
+import Mobile from './Mobile/Mobile';
+import Web from './Web/Web';
 let routers = createBrowserRouter([
-    {path:'/', element:<Layout/> , children:[
-      {path:'home', element:<Home/>},
-      {path:'gallery', element:<Gallery/>},
+    // {path:'/', element:<Layout/> , errorElement:<Notfound/>, children:[
+    {path:'/', element:<Layout/> ,  children:[
+      { index:true, element:<Home/>},
+      {path:'gallery', element:<Gallery/> , children:[
+        {path:'mobile' , element:<Mobile/>},
+        {path:'web' , element:<Web/>},
+      ]},
       {path:'users', element:<Users/>},
+      {path:'*', element:<Notfound/>},
     ]},
   ]);
-export default class App extends Component {
-    state = {};
-    render(){
-      return <>
-      <Home/>
-      <Users/>
-      <Gallery/>
-      </>
-    }
+export default function App() {
+      return <RouterProvider router={routers}  />
+          
 }
 
+{/*
+      <>
+           <BrowserRouter><Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="users" element={<Users />} />
+          <Route path="gallery" element={<Gallery />} />
+           <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter> 
+      </>
+    */}
